@@ -1,0 +1,61 @@
+[
+    {
+        "_id": "5d713995b721c3bb38c1f5d0",
+        "user": "5d7a514b5d2c12c7449be045",
+        "name": "FoodEvent0",
+        "description": "FoodEvent is hosted by XYZ NGO, helping in serving food to 1000 people in need.",
+        "category": "Food",
+        "location": "233 Bay State Rd Boston MA 02215",
+        "volunteerCount": 50,
+        "startingDateAndTime": "Today @ 12.00PM",
+        "endingDateAndTime": "Tomorrow @ 12.00PM",
+        "isPaid": false,
+        "price": 0,
+        "isPaying": true,
+        "payment": 1000,
+        "visibility": "private",
+        "jobAssistance": true,
+        "jobGuarantee": false,
+        "acceptGi": true
+      },
+
+      {
+        "_id": "5d713995b721c3bb38c1f5d0",
+        "user": "5d7a514b5d2c12c7449be045",
+        "name": "FoodEvent1 ",
+        "description": "FoodEvent is hosted by XYZ NGO, helping in serving food to 1000 people in need.",
+        "category": "Food",
+        "location": "233 Bay State Rd Boston MA 02215",
+        "volunteerCount": 50,
+        "startingDateAndTime": "Today @ 12.00PM",
+        "endingDateAndTime": "Tomorrow @ 12.00PM",
+        "isPaid": false,
+        "price": 0,
+        "isPaying": true,
+        "payment": 1000,
+        "visibility": "private",
+        "jobAssistance": true,
+        "jobGuarantee": false,
+        "acceptGi": true
+      },
+
+      {
+        "_id": "5d725a1b7b292f5f8ceff788",
+        "user": "5c8a1d5b0190b214360dc032",
+        "name": "FoodEvent2",
+        "description": "FoodEvent is hosted by XYZ NGO, helping in serving food to 1000 people in need.",
+        "category": "Food",
+        "location": "233 Bay State Rd Boston MA 02215",
+        "volunteerCount": 50,
+        "startingDateAndTime": "Today @ 12.00PM",
+        "endingDateAndTime": "Tomorrow @ 12.00PM",
+        "isPaid": false,
+        "price": 0,
+        "isPaying": true,
+        "payment": 1000,
+        "visibility": "private",
+        "jobAssistance": true,
+        "jobGuarantee": false,
+        "acceptGi": true
+  }
+]
