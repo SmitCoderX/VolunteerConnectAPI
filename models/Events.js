@@ -12,7 +12,7 @@ const EventSchema = new mongoose.Schema({
   slug: String,
   desc: {
     type: String,
-    // required: [true, 'Please add a Name'],
+    //required: [true, 'Please add a Description'],
   },
   category: {
     type: [String],
@@ -21,7 +21,7 @@ const EventSchema = new mongoose.Schema({
   },
   address: {
     type: String,
-    // required: [true, 'Please add an address'],
+    required: [true, 'Please add an address'],
   },
   photos: {
     type: [String],
@@ -66,12 +66,12 @@ const EventSchema = new mongoose.Schema({
     type: Boolean,
     // required: [true, 'Please Specify event is Paid or Not'],
   },
-  price: String,
+  price: Number,
   isPaying: {
     type: Boolean,
     // required: [true, 'Please Specify Event is Paying or Not'],
   },
-  payment: String,
+  payment: Number,
   visibility: {
     type: String,
     // required: [true, 'Please Specifiy the Visibility of the Event'],
