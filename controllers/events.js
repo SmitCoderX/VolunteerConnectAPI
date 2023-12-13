@@ -1,6 +1,7 @@
 const ErrorResponse = require('../utils/errorResponse');
 const asyncHandler = require('../middleware/async');
 const Events = require('../models/Events');
+
 //  @desc   Get All Events
 //  @route  GET /api/v1/events
 // @access  Public

@@ -13,6 +13,7 @@ connectDB();
 
 // Route files
 const events = require('./routes/events');
+const auth = require('./routes/auth');
 
 const app = express();
 
@@ -25,6 +26,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 // Mount routers
 app.use('/api/v1/events', events);
+app.use('/api/v1/auth', auth);
 
 // Error Middleware
 app.use(errorHandler);
