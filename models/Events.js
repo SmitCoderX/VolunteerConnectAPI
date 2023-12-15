@@ -98,6 +98,11 @@ const EventSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  user: {
+    type: mongoose.Schema.ObjectId,
+    ref: 'Users',
+    required: true,
+  },
 });
 
 // Create Event Slug from the name

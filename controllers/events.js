@@ -102,6 +102,8 @@ exports.getEvent = asyncHandler(async (req, res, next) => {
 //  @route  POST /api/v1/events/
 // @access  Private
 exports.createEvent = asyncHandler(async (req, res, next) => {
+  // Add user to req.body
+  req.body.user = req.user.id;
   const create = await Events.create(req.body);
   res.status(201).json({
     success: true,
@@ -113,15 +115,27 @@ exports.createEvent = asyncHandler(async (req, res, next) => {
 //  @route  PUT /api/v1/events/:id
 // @access  Private
 exports.updateEvent = asyncHandler(async (req, res, next) => {
-  const event = await Events.findByIdAndUpdate(req.params.id, req.body, {
-    new: true,
-    runValidators: true,
-  });
+  let event = await Events.findById(req.params.id);
   if (!event) {
     return next(
       new ErrorResponse(`Event not found with id of ${req.params.id}`, 404)
     );
   }
+
+  // Make sure user is event owner
+  if (event.user + '' !== req.user.id && req.user.role !== 'admin') {
+    return next(
+      new ErrorResponse(
+        `User ${req.params.id} is not authorized to update this event`,
+        401
+      )
+    );
+  }
+
+  event = await Events.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+    runValidators: true,
+  });
 
   res.status(200).json({
     success: true,
@@ -133,13 +147,25 @@ exports.updateEvent = asyncHandler(async (req, res, next) => {
 //  @route  DELETE /api/v1/events/:id
 // @access  Private
 exports.deleteEvent = asyncHandler(async (req, res, next) => {
-  const event = await Events.findByIdAndDelete(req.params.id);
+  let event = await Events.findById(req.params.id);
 
   if (!event) {
     return next(
       new ErrorResponse(`Event not found with id of ${req.params.id}`, 404)
     );
   }
+
+  // Make sure user is event owner
+  if (event.user + '' !== req.user.id && req.user.role !== 'admin') {
+    return next(
+      new ErrorResponse(
+        `User ${req.params.id} is not authorized to delete this event`,
+        401
+      )
+    );
+  }
+
+  event.remove();
 
   res.status(200).json({
     success: true,
