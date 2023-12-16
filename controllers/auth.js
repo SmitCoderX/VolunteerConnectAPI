@@ -5,7 +5,7 @@ const crypto = require('crypto');
 const sendEmail = require('../utils/sendEmail');
 
 //  @desc   Register User
-//  @route  GET /api/v1/auth/register
+//  @route  POST /api/v1/auth/register
 //  @access  Public
 exports.register = asyncHandler(async (req, res, next) => {
   const { username, name, email, role, password } = req.body;
@@ -65,24 +65,6 @@ exports.login = asyncHandler(async (req, res, next) => {
 // @access  Private
 exports.getMe = asyncHandler(async (req, res, next) => {
   const user = await User.findById(req.user.id);
-  res.status(200).json({
-    success: true,
-    data: user,
-  });
-});
-
-//  @desc   Get User Data
-// @route   GET /api/v1/auth/user/:id
-// @access  Private
-exports.getUserData = asyncHandler(async (req, res, next) => {
-  const user = await User.findById(req.params.id);
-
-  if (!user) {
-    return next(
-      new ErrorResponse(`User not Found with id of ${req.params.id}`, 404)
-    );
-  }
-
   res.status(200).json({
     success: true,
     data: user,
@@ -160,6 +142,48 @@ exports.resetPassword = asyncHandler(async (req, res, next) => {
   user.password = req.body.password;
   user.resetPasswordToken = undefined;
   user.resetPasswordExpire = undefined;
+  await user.save();
+
+  // Create Token
+  const token = user.getSignedJwtToken();
+
+  res.status(200).json({
+    success: true,
+    token: token,
+  });
+});
+
+// @desc    Update user details
+// @route   PUT /api/v1/auth/updatedetails
+// @access  Private
+exports.updateDetails = asyncHandler(async (req, res, next) => {
+  const fieldsToUpdate = {
+    name: req.body.name,
+    email: req.body.email,
+  };
+  const user = await User.findByIdAndUpdate(req.user.id, fieldsToUpdate, {
+    new: true,
+    runValidators: true,
+  });
+
+  res.status(200).json({
+    success: true,
+    data: user,
+  });
+});
+
+// @desc    Update user password
+// @route   PUT /api/v1/auth/updatepassword
+// @access  Private
+exports.updatePassword = asyncHandler(async (req, res, next) => {
+  let user = await User.findById(req.user.id).select('+password');
+
+  // Check Current Password
+  if (!(await user.matchPassword(req.body.currentPassword))) {
+    return next(new ErrorResponse('Password is incorrect', 401));
+  }
+
+  user.password = req.body.newPassword;
   await user.save();
 
   // Create Token
