@@ -6,6 +6,7 @@ const {
   updateEvent,
   deleteEvent,
   getEventsInRadius,
+  eventUploadPhoto,
 } = require('../controllers/events');
 const router = express.Router();
 const { protect, authorize } = require('../middleware/auth');
@@ -21,5 +22,9 @@ router
   .get(getEvent)
   .put(protect, authorize('organization', 'admin'), updateEvent)
   .delete(protect, authorize('organization', 'admin'), deleteEvent);
+
+router
+  .route('/:id/photo')
+  .put(protect, authorize('organization', 'admin'), eventUploadPhoto);
 
 module.exports = router;

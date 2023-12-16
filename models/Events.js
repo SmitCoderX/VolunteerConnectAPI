@@ -23,7 +23,11 @@ const EventSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Please add an address'],
   },
-  photos: {
+  eventPicture: {
+    type: String,
+    default: 'no-photo.jpg',
+  },
+  gallery: {
     type: [String],
     default: 'no-photo.jpg',
   },

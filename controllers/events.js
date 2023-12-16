@@ -1,6 +1,7 @@
 const ErrorResponse = require('../utils/errorResponse');
 const asyncHandler = require('../middleware/async');
 const Events = require('../models/Events');
+const path = require('path');
 
 //  @desc   Get All Events
 //  @route  GET /api/v1/events
@@ -194,5 +195,64 @@ exports.getEventsInRadius = asyncHandler(async (req, res, next) => {
     success: true,
     count: events.length,
     data: events,
+  });
+});
+
+//  @desc   Upload Photo for the Event
+//  @route  PUT /api/v1/events/:id/photo
+// @access  Private
+exports.eventUploadPhoto = asyncHandler(async (req, res, next) => {
+  let event = await Events.findById(req.params.id);
+
+  if (!event) {
+    return next(
+      new ErrorResponse(`Event not found with id of ${req.params.id}`, 404)
+    );
+  }
+
+  if (!req.files) {
+    return next(new ErrorResponse(`Please Upload a file`, 400));
+  }
+
+  // Make sure user is event owner
+  if (event.user + '' !== req.user.id && req.user.role !== 'admin') {
+    return next(
+      new ErrorResponse(
+        `User ${req.params.id} is not authorized to update this event`,
+        401
+      )
+    );
+  }
+
+  const file = req.files.file;
+
+  // Make sure the image is a photo
+  if (!file.mimetype.startsWith('image')) {
+    return next(new ErrorResponse(`Please Upload an Image File`, 400));
+  }
+
+  // Check file size
+  if (file.size > process.env.MAX_FILE_UPLOAD) {
+    return next(
+      new ErrorResponse(
+        `Please Upload an image with less than ${process.env.MAX_FILE_UPLOAD}`,
+        400
+      )
+    );
+  }
+
+  // Create Custom File Name
+  file.name = `photo_${event._id}${path.parse(file.name).ext}`;
+  file.mv(`${process.env.FILE_UPLOAD_PATH}/${file.name}`, async (err) => {
+    if (err) {
+      console.error(err);
+      return next(new ErrorResponse('Problem with file Upload', 500));
+    }
+    await Events.findByIdAndUpdate(req.params.id, { eventPicture: file.name });
+
+    res.status(200).json({
+      success: true,
+      data: file.name,
+    });
   });
 });
