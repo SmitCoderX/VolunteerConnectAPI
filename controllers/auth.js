@@ -9,17 +9,17 @@ const sendEmail = require('../utils/sendEmail');
 //  @route  POST /api/v1/auth/register
 //  @access  Public
 exports.register = asyncHandler(async (req, res, next) => {
-  const { username, name, email, role, password, phoneNumber } = req.body;
+  const fieldsToAdd = {
+    username: req.body.username,
+    name: req.body.name,
+    email: req.body.email,
+    role: req.body.role,
+    password: req.body.password,
+    phoneNumber: req.body.phoneNumber,
+  };
 
   // Create User
-  const user = await User.create({
-    username,
-    name,
-    email,
-    role,
-    password,
-    phoneNumber,
-  });
+  const user = await User.create(fieldsToAdd);
 
   // Create Token
   const token = user.getSignedJwtToken();
@@ -168,6 +168,7 @@ exports.updateDetails = asyncHandler(async (req, res, next) => {
   const fieldsToUpdate = {
     name: req.body.name,
     email: req.body.email,
+    phoneNumber: req.body.phoneNumber,
   };
   const user = await User.findByIdAndUpdate(req.user.id, fieldsToUpdate, {
     new: true,

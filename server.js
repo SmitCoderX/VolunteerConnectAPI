@@ -21,6 +21,7 @@ const users = require('./routes/users');
 const app = express();
 
 //Body Parser
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // Dev Loggin Middleware
