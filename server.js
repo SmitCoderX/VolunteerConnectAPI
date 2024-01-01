@@ -17,6 +17,7 @@ connectDB();
 const events = require('./routes/events');
 const auth = require('./routes/auth');
 const users = require('./routes/users');
+const category = require('./routes/category');
 
 const app = express();
 
@@ -39,6 +40,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/api/v1/events', events);
 app.use('/api/v1/auth', auth);
 app.use('/api/v1/user', users);
+app.use('/api/v1/category', category);
 
 // Error Middleware
 app.use(errorHandler);
