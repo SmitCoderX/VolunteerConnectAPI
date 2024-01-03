@@ -60,6 +60,12 @@ UserSchema.pre('save', async function (next) {
   this.password = await bcrypt.hash(this.password, salt);
 });
 
+// Set Profile Picture from multiavatar
+UserSchema.pre('save', async function (next) {
+  this.photos = `https://api.multiavatar.com/${this.username}.png?apiKey=dBi8f4ezwYg07V`;
+  next();
+});
+
 // Sign JWT and return
 UserSchema.methods.getSignedJwtToken = function () {
   return jwt.sign({ id: this._id }, process.env.JWT_SECRET, {
