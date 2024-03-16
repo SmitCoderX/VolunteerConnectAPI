@@ -31,24 +31,9 @@ const EventSchema = new mongoose.Schema({
     type: [String],
     default: 'no-photo.jpg',
   },
-  location: {
-    // GeoJSON Point
-    type: {
-      type: String,
-      enum: ['Point'],
-      // required: true,
-    },
-    coordinates: {
-      type: [Number],
-      // required: true,
-      index: '2dsphere',
-    },
-    formattedAddress: String,
-    street: String,
-    city: String,
-    state: String,
-    zipcode: String,
-    country: String,
+  coordinates: {
+    type: [Number],
+    required: [true, 'Please Add Location'],
   },
   phone: {
     type: String,
@@ -116,22 +101,22 @@ EventSchema.pre('save', function (next) {
 });
 
 //Geocode & Create Location field
-EventSchema.pre('save', async function (next) {
-  const loc = await geocoder.geocode(this.address);
-  this.location = {
-    type: 'Point',
-    coordinates: [loc[0].longitude, loc[0].latitude],
-    formattedAddress: loc[0].formattedAddress,
-    street: loc[0].streetName,
-    city: loc[0].city,
-    state: loc[0].stateCode,
-    zipcode: loc[0].zipcode,
-    country: loc[0].countryCode,
-  };
+// EventSchema.pre('save', async function (next) {
+//   const loc = await geocoder.geocode(this.address);
+//   this.location = {
+//     type: 'Point',
+//     coordinates: [loc[0].longitude, loc[0].latitude],
+//     formattedAddress: loc[0].formattedAddress,
+//     street: loc[0].streetName,
+//     city: loc[0].city,
+//     state: loc[0].stateCode,
+//     zipcode: loc[0].zipcode,
+//     country: loc[0].countryCode,
+//   };
 
-  // Do not save address in db
-  this.address = undefined;
-  next();
-});
+//   // Do not save address in db
+//   this.address = undefined;
+//   next();
+// });
 
 module.exports = mongoose.model('Events', EventSchema);
