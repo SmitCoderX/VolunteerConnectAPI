@@ -51,6 +51,9 @@ const EventSchema = new mongoose.Schema({
     type: Number,
     // required: [true, 'Please Specify the number of volunteer required'],
   },
+  skills: {
+    type: [String],
+  },
   isPaid: {
     type: Boolean,
     // required: [true, 'Please Specify event is Paid or Not'],
