@@ -86,6 +86,18 @@ const EventSchema = new mongoose.Schema({
   isStarted: Boolean,
   isEnded: Boolean,
   isLive: Boolean,
+  isResource: Boolean,
+  question: {
+    type: [String],
+  },
+  isForumCreated: {
+    type: Boolean,
+  },
+  forumName: String,
+  forum: {
+    type: mongoose.Schema.ObjectId,
+    ref: 'Forum',
+  },
   createdAt: {
     type: Date,
     default: Date.now,
@@ -100,26 +112,9 @@ const EventSchema = new mongoose.Schema({
 // Create Event Slug from the name
 EventSchema.pre('save', function (next) {
   this.slug = slugify(this.name, { lower: true });
+  this.eventPoint = 50;
+
   next();
 });
-
-//Geocode & Create Location field
-// EventSchema.pre('save', async function (next) {
-//   const loc = await geocoder.geocode(this.address);
-//   this.location = {
-//     type: 'Point',
-//     coordinates: [loc[0].longitude, loc[0].latitude],
-//     formattedAddress: loc[0].formattedAddress,
-//     street: loc[0].streetName,
-//     city: loc[0].city,
-//     state: loc[0].stateCode,
-//     zipcode: loc[0].zipcode,
-//     country: loc[0].countryCode,
-//   };
-
-//   // Do not save address in db
-//   this.address = undefined;
-//   next();
-// });
 
 module.exports = mongoose.model('Events', EventSchema);

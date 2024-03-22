@@ -18,6 +18,7 @@ const events = require('./routes/events');
 const auth = require('./routes/auth');
 const users = require('./routes/users');
 const category = require('./routes/category');
+const forum = require('./routes/forum');
 
 const app = express();
 
@@ -41,6 +42,7 @@ app.use('/api/v1/events', events);
 app.use('/api/v1/auth', auth);
 app.use('/api/v1/user', users);
 app.use('/api/v1/category', category);
+app.use('/api/v1/forum', forum);
 
 // Error Middleware
 app.use(errorHandler);

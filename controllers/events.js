@@ -2,6 +2,7 @@ const ErrorResponse = require('../utils/errorResponse');
 const asyncHandler = require('../middleware/async');
 const Events = require('../models/Events');
 const path = require('path');
+const Forum = require('../models/Forum');
 
 //  @desc   Get All Events
 //  @route  GET /api/v1/events
@@ -106,6 +107,13 @@ exports.createEvent = asyncHandler(async (req, res, next) => {
   // Add user to req.body
   req.body.user = req.user.id;
   const create = await Events.create(req.body);
+  if (req.body.isForumCreated === true) {
+    const createForum = await Forum.create({
+      forumName: req.body.forumName,
+      event: create._id,
+    });
+    create.forum = createForum._id;
+  }
   res.status(201).json({
     success: true,
     data: create,
