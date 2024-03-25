@@ -18,6 +18,10 @@ const ForumSchema = new mongoose.Schema({
     ref: 'Events',
     required: true,
   },
+  participants: {
+    type: mongoose.Schema.ObjectId,
+    ref: 'Users',
+  },
 });
 
 ForumSchema.pre('save', function (next) {

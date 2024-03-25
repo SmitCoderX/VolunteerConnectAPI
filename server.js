@@ -19,6 +19,7 @@ const auth = require('./routes/auth');
 const users = require('./routes/users');
 const category = require('./routes/category');
 const forum = require('./routes/forum');
+const volunteer = require('./routes/volunteer');
 
 const app = express();
 
@@ -43,6 +44,7 @@ app.use('/api/v1/auth', auth);
 app.use('/api/v1/user', users);
 app.use('/api/v1/category', category);
 app.use('/api/v1/forum', forum);
+app.use('/api/v1/volunteer', volunteer);
 
 // Error Middleware
 app.use(errorHandler);

@@ -107,6 +107,10 @@ const EventSchema = new mongoose.Schema({
     ref: 'Users',
     required: true,
   },
+  volunteers: {
+    type: [mongoose.Schema.ObjectId],
+    ref: 'Users',
+  },
 });
 
 // Create Event Slug from the name

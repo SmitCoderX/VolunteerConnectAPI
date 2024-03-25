@@ -102,7 +102,7 @@ exports.getEvent = asyncHandler(async (req, res, next) => {
 
 //  @desc   Create New Events
 //  @route  POST /api/v1/events/
-// @access  Private
+//  @access  Private
 exports.createEvent = asyncHandler(async (req, res, next) => {
   // Add user to req.body
   req.body.user = req.user.id;
