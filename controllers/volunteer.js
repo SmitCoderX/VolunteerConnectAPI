@@ -59,30 +59,21 @@ exports.requestStatus = asyncHandler(async (req, res, next) => {
   });
 
   if (req.body.status === 2) {
-    event = await Events.findOneAndUpdate(
-      { _id: request.recipient },
-      { $push: { volunteers: request.requester } }
-    );
-    if (event) {
-      message = 'Request Accepted';
-      if (
-        !forum.participants.includes(request.requester) &&
-        !forum.participants.includes(request.recipient)
-      ) {
-        forum = await Forum.findOneAndUpdate(
-          { _id: event.forumId },
-          { $push: { participants: request.requester } }
-        );
-      } else {
-        return next(new ErrorResponse(`User Already in the Forum`, 403));
-      }
-    } else {
-      return next(
-        new ErrorResponse(
-          `Event Not Found with id of ${request.recipient}`,
-          404
-        )
+    message = 'Request Accepted';
+    if (
+      !forum.participants.includes(request.requester) &&
+      !forum.participants.includes(request.recipient)
+    ) {
+      forum = await Forum.findOneAndUpdate(
+        { _id: event.forumId },
+        { $push: { participants: request.requester } }
       );
+      event = await Events.findOneAndUpdate(
+        { _id: request.recipient },
+        { $push: { volunteers: request.requester } }
+      );
+    } else {
+      return next(new ErrorResponse(`User Already in the Forum`, 403));
     }
   } else {
     message = 'Request Rejected';
