@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const slugify = require('slugify');
 const geocoder = require('../utils/geocoder');
+const Forum = require('./Forum');
+const ErrorResponse = require('../utils/errorResponse');
 
 const EventSchema = new mongoose.Schema({
   name: {
@@ -94,9 +96,9 @@ const EventSchema = new mongoose.Schema({
     type: Boolean,
   },
   forumName: String,
-  forum: {
+  forumId: {
     type: mongoose.Schema.ObjectId,
-    ref: 'Forum',
+    ref: 'Forums',
   },
   createdAt: {
     type: Date,
@@ -117,7 +119,6 @@ const EventSchema = new mongoose.Schema({
 EventSchema.pre('save', function (next) {
   this.slug = slugify(this.name, { lower: true });
   this.eventPoint = 50;
-
   next();
 });
 

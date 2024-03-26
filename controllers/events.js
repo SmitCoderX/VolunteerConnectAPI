@@ -106,17 +106,21 @@ exports.getEvent = asyncHandler(async (req, res, next) => {
 exports.createEvent = asyncHandler(async (req, res, next) => {
   // Add user to req.body
   req.body.user = req.user.id;
-  const create = await Events.create(req.body);
+  let create = await Events.create(req.body);
   if (req.body.isForumCreated === true) {
     const createForum = await Forum.create({
       forumName: req.body.forumName,
       event: create._id,
+      // participants: req.user.id,
     });
-    create.forum = createForum._id;
+    await Events.updateOne(
+      { _id: create._id },
+      { $set: { forumId: createForum.id } }
+    );
   }
   res.status(201).json({
     success: true,
-    data: create,
+    message: 'Event Created Successfully',
   });
 });
 

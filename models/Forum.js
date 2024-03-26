@@ -19,7 +19,7 @@ const ForumSchema = new mongoose.Schema({
     required: true,
   },
   participants: {
-    type: mongoose.Schema.ObjectId,
+    type: [mongoose.Schema.ObjectId],
     ref: 'Users',
   },
 });

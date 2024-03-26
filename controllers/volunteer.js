@@ -2,6 +2,7 @@ const ErrorResponse = require('../utils/errorResponse');
 const asyncHandler = require('../middleware/async');
 const Volunteer = require('../models/Volunteer');
 const Events = require('../models/Events');
+const Forum = require('../models/Forum');
 
 // @desc    Send Request
 // @route   POST /api/v1/sendRequest
@@ -22,6 +23,7 @@ exports.sendRequest = asyncHandler(async (req, res, next) => {
 exports.requestStatus = asyncHandler(async (req, res, next) => {
   let request = await Volunteer.findById(req.params.id);
   let event = await Events.findById(request.recipient);
+  let forum = await Forum.findById(event.forumId);
   let message = '';
   if (!request) {
     return next(
@@ -31,7 +33,13 @@ exports.requestStatus = asyncHandler(async (req, res, next) => {
 
   if (!event) {
     return next(
-      new ErrorResponse(`Event Not Found with id of ${req.params.id}`, 404)
+      new ErrorResponse(`Event Not Found with id of ${request.recipient}`, 404)
+    );
+  }
+
+  if (!forum) {
+    return next(
+      new ErrorResponse(`Forum Not Found with id of ${event.forumId}`, 404)
     );
   }
 
@@ -57,6 +65,17 @@ exports.requestStatus = asyncHandler(async (req, res, next) => {
     );
     if (event) {
       message = 'Request Accepted';
+      if (
+        !forum.participants.includes(request.requester) &&
+        !forum.participants.includes(request.recipient)
+      ) {
+        forum = await Forum.findOneAndUpdate(
+          { _id: event.forumId },
+          { $push: { participants: request.requester } }
+        );
+      } else {
+        return next(new ErrorResponse(`User Already in the Forum`, 403));
+      }
     } else {
       return next(
         new ErrorResponse(
