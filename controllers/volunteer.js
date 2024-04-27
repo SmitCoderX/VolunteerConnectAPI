@@ -3,18 +3,29 @@ const asyncHandler = require('../middleware/async');
 const Volunteer = require('../models/Volunteer');
 const Events = require('../models/Events');
 const Forum = require('../models/Forum');
+const { mongoose } = require('mongoose');
 
 // @desc    Send Request
 // @route   POST /api/v1/sendRequest
 // @access  Private
 exports.sendRequest = asyncHandler(async (req, res, next) => {
+  var ObjectId = require('mongoose').Types.ObjectId;
   req.body.requester = req.user.id;
-  const request = await Volunteer.create(req.body);
 
-  res.status(201).json({
-    success: true,
-    data: request,
+  const existingRequest = await Volunteer.findOne({
+    recipient: new ObjectId(req.body.recipient),
+    requester: req.user.id,
   });
+
+  if (existingRequest) {
+    return next(new ErrorResponse(`Already Sended the Request`, 403));
+  } else {
+    const request = await Volunteer.create(req.body);
+    res.status(201).json({
+      success: true,
+      data: request,
+    });
+  }
 });
 
 // @desc    Accept or Decline Request

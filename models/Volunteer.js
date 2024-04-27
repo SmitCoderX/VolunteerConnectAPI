@@ -18,6 +18,9 @@ const VolunteerSchema = new mongoose.Schema({
   status: {
     type: Number,
   },
+  transactionId: {
+    type: String,
+  },
 });
 
 module.exports = mongoose.model('Volunteer', VolunteerSchema);

@@ -198,7 +198,7 @@ exports.getEventsInRadius = asyncHandler(async (req, res, next) => {
   const radius = distance / 6378;
 
   const events = await Events.find({
-    location: {
+    coordinates: {
       $geoWithin: { $centerSphere: [[lat, long], radius] },
     },
   });

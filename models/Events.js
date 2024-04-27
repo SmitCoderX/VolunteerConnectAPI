@@ -69,7 +69,10 @@ const EventSchema = new mongoose.Schema({
   visibility: {
     type: String,
     // required: [true, 'Please Specifiy the Visibility of the Event'],
-    enum: ['private', 'public', 'invitesOnly'],
+    enum: ['private', 'public', 'paid'],
+  },
+  documentType: {
+    type: String,
   },
   isGoodiesProvided: {
     type: Boolean,
