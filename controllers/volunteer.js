@@ -3,7 +3,7 @@ const asyncHandler = require('../middleware/async');
 const Volunteer = require('../models/Volunteer');
 const Events = require('../models/Events');
 const Forum = require('../models/Forum');
-const { mongoose } = require('mongoose');
+const { default: mongoose } = require('mongoose');
 
 // @desc    Send Request
 // @route   POST /api/v1/sendRequest
@@ -93,5 +93,38 @@ exports.requestStatus = asyncHandler(async (req, res, next) => {
   res.status(200).json({
     success: true,
     message: message,
+  });
+});
+
+// @desc    Get Recipient Request List
+// @route   GET /api/v1/recipientRequests
+// @access  Private
+
+exports.getRecipientRequestes = asyncHandler(async (req, res, next) => {
+  var ObjectId = require('mongoose').Types.ObjectId;
+
+  const requestes = await Volunteer.find({
+    recipient: new ObjectId(req.params.id),
+  });
+  res.status(200).json({
+    success: true,
+    message: requestes,
+  });
+});
+
+// @desc    Get Requester Request List
+// @route   GET /api/v1/requesterRequests
+// @access  Private
+
+exports.getRequesterRequestes = asyncHandler(async (req, res, next) => {
+  var ObjectId = new require('mongoose').Types.ObjectId;
+
+  const requestes = await Volunteer.find({
+    requester: new ObjectId(req.params.id),
+  });
+
+  res.status(200).json({
+    success: true,
+    message: requestes,
   });
 });
