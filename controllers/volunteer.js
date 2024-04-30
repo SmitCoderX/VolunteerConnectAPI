@@ -97,7 +97,7 @@ exports.requestStatus = asyncHandler(async (req, res, next) => {
 });
 
 // @desc    Get Recipient Request List
-// @route   GET /api/v1/recipientRequests
+// @route   GET /api/v1/recipientRequests/:id
 // @access  Private
 
 exports.getRecipientRequestes = asyncHandler(async (req, res, next) => {
@@ -113,7 +113,7 @@ exports.getRecipientRequestes = asyncHandler(async (req, res, next) => {
 });
 
 // @desc    Get Requester Request List
-// @route   GET /api/v1/requesterRequests
+// @route   GET /api/v1/requesterRequests/:id
 // @access  Private
 
 exports.getRequesterRequestes = asyncHandler(async (req, res, next) => {

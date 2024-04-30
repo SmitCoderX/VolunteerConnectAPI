@@ -9,11 +9,13 @@ const VolunteerSchema = new mongoose.Schema({
     type: mongoose.Schema.ObjectId,
     required: true,
   },
-  answers: {
-    type: Map,
-    of: String,
-    default: {},
-  },
+  answers: [
+    {
+      type: Map,
+      of: String,
+      default: {},
+    },
+  ],
   // Here 1 = Requested, 2 = Accepted, 3 = Rejected
   status: {
     type: Number,
