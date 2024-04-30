@@ -13,6 +13,9 @@ const VolunteerSchema = new mongoose.Schema({
     type: mongoose.Schema.ObjectId,
     required: true,
   },
+  appliedByProfile: {
+    type: String,
+  },
   eventName: {
     type: String,
     required: true,

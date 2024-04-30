@@ -14,6 +14,7 @@ exports.sendRequest = asyncHandler(async (req, res, next) => {
   req.body.requester = req.user.id;
   const findUser = await Users.findById(req.user.id);
   req.body.appliedBy = findUser.name;
+  req.body.appliedByProfile = findUser.photos;
 
   const existingRequest = await Volunteer.findOne({
     eventId: new ObjectId(req.body.eventId),
