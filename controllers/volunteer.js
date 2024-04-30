@@ -13,7 +13,7 @@ exports.sendRequest = asyncHandler(async (req, res, next) => {
   req.body.requester = req.user.id;
 
   const existingRequest = await Volunteer.findOne({
-    recipient: new ObjectId(req.body.recipient),
+    eventId: new ObjectId(req.body.eventId),
     requester: req.user.id,
   });
 
@@ -33,7 +33,7 @@ exports.sendRequest = asyncHandler(async (req, res, next) => {
 // @access  Private
 exports.requestStatus = asyncHandler(async (req, res, next) => {
   let request = await Volunteer.findById(req.params.id);
-  let event = await Events.findById(request.recipient);
+  let event = await Events.findById(request.eventId);
   let forum = await Forum.findById(event.forumId);
   let message = '';
   if (!request) {
@@ -44,15 +44,15 @@ exports.requestStatus = asyncHandler(async (req, res, next) => {
 
   if (!event) {
     return next(
-      new ErrorResponse(`Event Not Found with id of ${request.recipient}`, 404)
+      new ErrorResponse(`Event Not Found with id of ${request.eventId}`, 404)
     );
   }
 
-  if (!forum) {
-    return next(
-      new ErrorResponse(`Forum Not Found with id of ${event.forumId}`, 404)
-    );
-  }
+  // if (!forum) {
+  //   return next(
+  //     new ErrorResponse(`Forum Not Found with id of ${event.forumId}`, 404)
+  //   );
+  // }
 
   // Make sure user is event owner
   if (event.user + '' !== req.user.id && req.user.role !== 'admin') {
@@ -72,15 +72,15 @@ exports.requestStatus = asyncHandler(async (req, res, next) => {
   if (req.body.status === 2) {
     message = 'Request Accepted';
     if (
-      !forum.participants.includes(request.requester) &&
-      !forum.participants.includes(request.recipient)
+      !forum.participants.includes(request.requester)
+      // !forum.participants.includes(request.recipient)
     ) {
       forum = await Forum.findOneAndUpdate(
         { _id: event.forumId },
         { $push: { participants: request.requester } }
       );
       event = await Events.findOneAndUpdate(
-        { _id: request.recipient },
+        { _id: request.eventId },
         { $push: { volunteers: request.requester } }
       );
     } else {

@@ -9,6 +9,18 @@ const VolunteerSchema = new mongoose.Schema({
     type: mongoose.Schema.ObjectId,
     required: true,
   },
+  eventId: {
+    type: mongoose.Schema.ObjectId,
+    required: true,
+  },
+  eventName: {
+    type: String,
+    required: true,
+  },
+  appliedBy: {
+    type: String,
+    required: true,
+  },
   answers: [
     {
       type: Map,
