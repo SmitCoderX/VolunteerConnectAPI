@@ -4,6 +4,7 @@ const Volunteer = require('../models/Volunteer');
 const Events = require('../models/Events');
 const Forum = require('../models/Forum');
 const { default: mongoose } = require('mongoose');
+const Users = require('../models/Users');
 
 // @desc    Send Request
 // @route   POST /api/v1/sendRequest
@@ -11,6 +12,8 @@ const { default: mongoose } = require('mongoose');
 exports.sendRequest = asyncHandler(async (req, res, next) => {
   var ObjectId = require('mongoose').Types.ObjectId;
   req.body.requester = req.user.id;
+  const findUser = await Users.findById(req.user.id);
+  req.body.appliedBy = findUser.name;
 
   const existingRequest = await Volunteer.findOne({
     eventId: new ObjectId(req.body.eventId),
