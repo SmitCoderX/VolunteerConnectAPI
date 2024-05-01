@@ -4,6 +4,7 @@ const {
   updateForum,
   deleteForum,
   getForumData,
+  getForumDataList,
 } = require('../controllers/forum');
 const router = express.Router();
 const { protect, authorize } = require('../middleware/auth');
@@ -16,5 +17,7 @@ router
   .get(protect, authorize('organization', 'admin'), getForumData)
   .put(protect, authorize('organization', 'admin'), updateForum)
   .delete(protect, authorize('organization', 'admin'), deleteForum);
+
+router.route('/forumList/:id').get(protect, getForumDataList);
 
 module.exports = router;

@@ -20,6 +20,7 @@ const users = require('./routes/users');
 const category = require('./routes/category');
 const forum = require('./routes/forum');
 const volunteer = require('./routes/volunteer');
+const posts = require('./routes/posts');
 
 const app = express();
 
@@ -45,6 +46,7 @@ app.use('/api/v1/user', users);
 app.use('/api/v1/category', category);
 app.use('/api/v1/forum', forum);
 app.use('/api/v1/volunteer', volunteer);
+app.use('/api/v1/posts', posts);
 
 // Error Middleware
 app.use(errorHandler);

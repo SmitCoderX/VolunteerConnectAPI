@@ -18,6 +18,13 @@ const ForumSchema = new mongoose.Schema({
     ref: 'Events',
     required: true,
   },
+  userId: {
+    type: String,
+  },
+  posts: {
+    type: [mongoose.Schema.ObjectId],
+    ref: 'Posts',
+  },
   participants: {
     type: [mongoose.Schema.ObjectId],
     ref: 'Users',
