@@ -12,12 +12,13 @@ const { protect, authorize } = require('../middleware/auth');
 router
   .route('/')
   .post(protect, authorize('organization', 'admin'), createForum);
+
+router.route('/forumList').get(protect, getForumDataList);
+
 router
   .route('/:id')
   .get(protect, authorize('organization', 'admin'), getForumData)
   .put(protect, authorize('organization', 'admin'), updateForum)
   .delete(protect, authorize('organization', 'admin'), deleteForum);
-
-router.route('/forumList').get(protect, getForumDataList);
 
 module.exports = router;
