@@ -111,6 +111,8 @@ exports.createEvent = asyncHandler(async (req, res, next) => {
     const createForum = await Forum.create({
       forumName: req.body.forumName,
       event: create._id,
+      eventName: create.name,
+      forumImg: create.eventPicture,
       userId: req.body.user,
       participants: req.user.id,
     });

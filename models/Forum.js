@@ -18,6 +18,9 @@ const ForumSchema = new mongoose.Schema({
     ref: 'Events',
     required: true,
   },
+  eventName: {
+    type: String,
+  },
   userId: {
     type: String,
   },
