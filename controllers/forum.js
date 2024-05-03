@@ -70,17 +70,11 @@ exports.getForumData = asyncHandler(async (req, res, next) => {
   });
 });
 
-// @desc    Get Forum Data List By EventID
-// @route   GET /api/v1/forum/forumList/:id
+// @desc    Get Forum Data List
+// @route   GET /api/v1/forum/forumList
 // @access  Private
 exports.getForumDataList = asyncHandler(async (req, res, next) => {
-  const forum = await Forum.find({ userId: req.params.id });
-
-  if (!forum) {
-    return next(
-      new ErrorResponse(`User not Found with id of ${req.params.id}`, 404)
-    );
-  }
+  const forum = await Forum.find();
 
   res.status(200).json({
     success: true,

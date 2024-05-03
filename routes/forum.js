@@ -18,6 +18,6 @@ router
   .put(protect, authorize('organization', 'admin'), updateForum)
   .delete(protect, authorize('organization', 'admin'), deleteForum);
 
-router.route('/forumList/:id').get(protect, getForumDataList);
+router.route('/forumList').get(protect, getForumDataList);
 
 module.exports = router;
