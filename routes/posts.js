@@ -11,7 +11,7 @@ const { protect, authorize } = require('../middleware/auth');
 router.route('/').post(protect, authorize('organization', 'admin'), createPost);
 router
   .route('/:id')
-  .get(protect, authorize('organization', 'admin'), getPostDataList)
+  .get(protect, getPostDataList)
   .put(protect, authorize('organization', 'admin'), updatePost)
   .delete(protect, authorize('organization', 'admin'), deletePost);
 
