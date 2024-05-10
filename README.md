@@ -1,5 +1,5 @@
-## VolunteerConnectAPI
+# VolunteerConnectAPI
 
-# VolunteerConnect Backend:
+## VolunteerConnect Backend:
 - MongoDB
 - slugify
